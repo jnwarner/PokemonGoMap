@@ -52,6 +52,7 @@ function addPokeMarker(lat, lng, type, expire) {
 		position: latlng,
 		map: map,
 		animation: google.maps.Animation.DROP,
+		draggable: false
 	});
 	
 	pokeMarkerCount++;
