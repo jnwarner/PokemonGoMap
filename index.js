@@ -50,7 +50,8 @@ login.login(users, pass).then(token => {
             });
         });
     }, 10 * 1000);
-});
+})
+.catch(console.error);;
 
 app.listen(port);
 console.log("Server started at 127.0.0.1:" + port);
