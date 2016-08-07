@@ -9,7 +9,33 @@
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="#3b3b3b">
 		<link rel="icon" href="res/icons/icon.png" type="image/png">
+		
+		<!-- Compressed CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
+
+		<!-- Compressed JavaScript -->
+		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
 	</head>
 	<body>
+		<div class="title-bar">
+			<div class="title-bar-left">
+				<button class="menu-icon" type="button"></button>
+				<span class="title-bar-title">Pokemon GO Map</span>
+			</div>
+			<div class="title-bar-right">
+				<button class="menu-icon" type="button"></button>
+			</div>
+		</div>
+		<div id="map"></div>
 	</body>
+	<script>
+		var map;
+		function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: -34.397, lng: 150.644},
+			zoom: 8
+			});
+		}
+    </script>
+	<script src="https://maps.googleapis.com/maps/api/js?key={{APIKEY}}&callback=initMap" async defer></script>
 </hmtl>

@@ -1,8 +1,7 @@
-var app = require('http').createServer(handler)
+var app = require('http').createServer(handler);
 var io = require('socket.io')(app);
 var fs = require('fs');
 var pogobuf = require('pogobuf');
-var POGOProtos = require('node-pogo-protos');
 var configFile = 'config/config.json';
 
 var config = JSON.parse(
@@ -10,11 +9,13 @@ var config = JSON.parse(
 );
 
 var port = config.port;
+var apiKey = config.api_key;
 var loginMethod = config.auth;
 var users = config.accounts;
 var pass = config.pass;
 var lat = config.lat;
 var long = config.long;
+
 /*
 if (loginMethod.toLowerCase() == 'ptc') {
 	var login = new pogobuf.PTCLogin();
@@ -32,20 +33,18 @@ login.login(users, pass).then(token => {
     client.on('response', console.dir);
 	return client.init();
 })
-.catch(console.error);*/
+.catch(console.error);
+*/
 
 app.listen(port);
 console.log("Server started at 127.0.0.1:" + port);
 
 function handler (req, res) {
-	if (req.url === '/favicon.ico') {
-		res.writeHead(200, {'Content-Type' : 'image/x-icon'} );
-	}
     fs.readFile(__dirname + '/map.html',
     function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
+	if (err) {
+    	res.writeHead(500);
+    	return res.end('Error loading index.html');
     }
 
     res.writeHead(200);
@@ -54,8 +53,8 @@ function handler (req, res) {
 }
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+	socket.emit('news', { hello: 'world' });
+	socket.on('my other event', function (data) {
+    	console.log(data);
+	});
 });
