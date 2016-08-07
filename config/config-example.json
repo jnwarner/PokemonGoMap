@@ -1,0 +1,7 @@
+{
+	"port" : "3000",
+	"api_key" : "GOOGLE_API_KEY",
+	"auth" : "AUTH_TYPE_GOOGLE_PTC",
+	"accounts" : "ACCT1,ACCT2,ACCT3",
+	"pass" : "PASSWORD"
+}
