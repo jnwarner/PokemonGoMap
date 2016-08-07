@@ -16,8 +16,8 @@ var apiKey = config.api_key;
 var loginMethod = config.auth;
 var users = config.accounts;
 var pass = config.pass;
-var lat = config.lat;
-var long = config.long;
+var lat = parseFloat(config.lat);
+var long = parseFloat(config.long);
 
 if (loginMethod.toLowerCase() == 'ptc') {
 	var login = new pogobuf.PTCLogin();
@@ -30,7 +30,7 @@ var client = new pogobuf.Client();
 login.login(users, pass).then(token => {
 	// Initialize client
 	client.setAuthInfo(loginMethod, token);
-	client.setPosition(lat, long, 8);
+	client.setPosition(lat, long);
 	client.on('request', console.dir);
   client.on('response', console.dir);
 	console.log('Logging into '+users+' with loginMethod '+loginMethod+' at Lat '+lat+' Long '+long);
