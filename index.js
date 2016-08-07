@@ -1,7 +1,8 @@
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
-const pokeio = require('pokemon-go-node-api');
+var pogobuf = require('pogobuf');
+var POGOProtos = require('node-pogo-protos');
 var configFile = 'config/config.json';
 
 var config = JSON.parse(
@@ -10,7 +11,11 @@ var config = JSON.parse(
 
 var port = config.port;
 var loginMethod = config.auth;
-
+var users = config.accounts;
+var pass = config.pass;
+var lat = config.lat;
+var long = config.long;
+/*
 if (loginMethod.toLowerCase() == 'ptc') {
 	var login = new pogobuf.PTCLogin();
 } else {
@@ -19,11 +24,25 @@ if (loginMethod.toLowerCase() == 'ptc') {
 
 var client = new pogobuf.Client();
 
+login.login(users, pass).then(token => {
+	// Initialize client
+	client.setAuthInfo(loginMethod, token);
+	client.setPosition(lat, long);
+	client.on('request', console.dir);
+    client.on('response', console.dir);
+	return client.init();
+})
+.catch(console.error);*/
+
 app.listen(port);
+console.log("Server started at 127.0.0.1:" + port);
 
 function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
+	if (req.url === '/favicon.ico') {
+		res.writeHead(200, {'Content-Type' : 'image/x-icon'} );
+	}
+    fs.readFile(__dirname + '/map.html',
+    function (err, data) {
     if (err) {
       res.writeHead(500);
       return res.end('Error loading index.html');
