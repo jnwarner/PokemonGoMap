@@ -12,11 +12,46 @@ var light2StyleNoLabels=[{"elementType":"geometry","stylers":[{"hue":"#ff4400"},
 var darkStyleNoLabels=[{"featureType":"all","elementType":"labels.text.fill","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#181818"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"lightness":17},{"color":"#525252"}]}];
 var pGoStyleNoLabels=[{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#a1f199"}]},{"featureType":"landscape.natural.landcover","elementType":"geometry.fill","stylers":[{"color":"#37bda2"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry.fill","stylers":[{"color":"#37bda2"}]},{"featureType":"poi.attraction","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","elementType":"geometry.fill","stylers":[{"color":"#e4dfd9"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#37bda2"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#84b09e"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#fafeb8"},{"weight":"1.25"}]},{"featureType":"road.highway","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#5ddad6"}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]}];
 
+var style_NoLabels = new google.maps.StyledMapType(noLabelsStyle, {
+    name: "No Labels"
+  });
+  map.mapTypes.set('nolabels_style', style_NoLabels);
+
+  var style_dark = new google.maps.StyledMapType(darkStyle, {
+    name: "Dark"
+  });
+  map.mapTypes.set('dark_style', style_dark);
+
+  var style_light2 = new google.maps.StyledMapType(light2Style, {
+    name: "Light2"
+  });
+  map.mapTypes.set('style_light2', style_light2);
+
+  var style_pgo = new google.maps.StyledMapType(pGoStyle, {
+    name: "PokemonGo"
+  });
+  map.mapTypes.set('style_pgo', style_pgo);
+
+  var style_dark_nl = new google.maps.StyledMapType(darkStyleNoLabels, {
+    name: "Dark (No Labels)"
+  });
+  map.mapTypes.set('dark_style_nl', style_dark_nl);
+
+  var style_light2_nl = new google.maps.StyledMapType(light2StyleNoLabels, {
+    name: "Light2 (No Labels)"
+  });
+  map.mapTypes.set('style_light2_nl', style_light2_nl);
+
+  var style_pgo_nl = new google.maps.StyledMapType(pGoStyleNoLabels, {
+    name: "PokemonGo (No Labels)"
+  });
+  map.mapTypes.set('style_pgo_nl', style_pgo_nl);
+
 var selectedStyle = 'light';
 
 var gym_types = ["Neutral", "Mystic", "Valor", "Instinct"];
 
-function initMap() {
+/*function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: {
 			lat: 4,
@@ -42,7 +77,7 @@ function initMap() {
 			]
 		},
 	})
-}
+}*/
 
 function addPokeMarker(lat, lng, type, expire) {
 	var infoWindow = new google.maps.InfoWindow();

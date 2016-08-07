@@ -6,10 +6,16 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
+		<script src="map.js">
+			initMap();
+		</script>
 		<style>
-			#map{
-				height: 100%;
+			#map {
+				height: 96%;
 				width: 100%;
+			}
+			.title-bar {
+				height: 4%;
 			}
 		</style>
 	</head>
@@ -19,20 +25,41 @@
 				<button class="menu-icon" type="button"></button>
 				<span class="title-bar-title">Pokemon GO Map</span>
 			</div>
-			<div class="title-bar-right">
-				<button class="menu-icon" type="button"></button>
-			</div>
+		</div>
+		<div class="settings">
+			
 		</div>
 		<div id="map"></div>
 	</body>
 	<script>
-		var map;
 		function initMap() {
 			map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat: -34.397, lng: 150.644},
-			zoom: 8
-			});
+				center: {
+					lat: 4,
+					lng: 4
+				},
+				zoom: 8,
+				fullscreenControl: true,
+				rotateControl: true,
+				streetViewControl: false,
+				mapTypeControl: true,
+				mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+					position: google.maps.ControlPosition.TOP_RIGHT,
+					mapTypeIds: [
+						google.maps.MapTypeId.ROADMAP,
+						google.maps.MapTypeId.SATELLITE,
+						'nolabels_style',
+						'dark_style',
+						'style_light2',
+						'style_pgo',
+						'dark_style_nl',
+						'style_light2_nl',
+						'style_pgo_nl'
+					],
+				},
+			})
 		}
-    </script>
-	<script src="https://maps.googleapis.com/maps/api/js?key={{ APIKEY }}&callback=initMap" async defer></script>
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKBNvVI4Z3i7lK1D0RyjHdgDpgUsy5ot8&callback=initMap" async defer></script>
 </hmtl>
