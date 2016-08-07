@@ -1,7 +1,10 @@
 var app = require('http').createServer(handler);
 var io = require('socket.io')(app);
 var fs = require('fs');
-var pogobuf = require('pogobuf');
+const pogobuf = require('pogobuf'),
+	  POGOProtos = require('node-pogo-protos'),
+	  bluebird = require('bluebird'),
+	  Long = require('long');
 var configFile = 'config/config.json';
 
 var config = JSON.parse(
@@ -16,7 +19,7 @@ var pass = config.pass;
 var lat = config.lat;
 var long = config.long;
 
-/*
+
 if (loginMethod.toLowerCase() == 'ptc') {
 	var login = new pogobuf.PTCLogin();
 } else {
@@ -31,10 +34,25 @@ login.login(users, pass).then(token => {
 	client.setPosition(lat, long);
 	client.on('request', console.dir);
     client.on('response', console.dir);
+	console.log('Logging in with loginMethod');
 	return client.init();
-})
-.catch(console.error);
-*/
+}).then(() => {
+	console.log('Authenticated, waiting for first map refresh (30s)');
+    setInterval(() => {
+        var cellIDs = pogobuf.Utils.getCellIDs(lat, lng);
+        return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0))).then(mapObjects => {
+            return mapObjects.map_cells;
+        }).each(cell => {
+            console.log('Cell ' + cell.s2_cell_id.toString());
+            console.log('Has ' + cell.catchable_pokemons.length + ' catchable Pokemon');
+            return bluebird.resolve(cell.catchable_pokemons).each(catchablePokemon => {
+                console.log(' - A ' + pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId,
+                    catchablePokemon.pokemon_id) + ' is asking you to catch it.');
+            });
+        });
+    }, 30 * 1000);
+});
+
 
 app.listen(port);
 console.log("Server started at 127.0.0.1:" + port);
