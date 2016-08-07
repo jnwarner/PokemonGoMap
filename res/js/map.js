@@ -53,6 +53,8 @@ function addGymMarker(lat, lng, team) {
 		animation: google.maps.Animation.DROP,
 		draggable:false
 	});
+    
+    gymCount++;
 	
 	google.maps.event.addEventListener(marker, 'click', (function(marker, gymCount) {
 		return function() {

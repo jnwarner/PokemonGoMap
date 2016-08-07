@@ -44,7 +44,7 @@ function handler (req, res) {
     function (err, data) {
 	if (err) {
     	res.writeHead(500);
-    	return res.end('Error loading index.html');
+    	return res.end('Error loading... Curl up and cri everytime');
     }
 
     res.writeHead(200);
