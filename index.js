@@ -36,6 +36,11 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/map.html');
 });
 
+app.use('/res', express.static(__dirname + '/res'));
+app.use('/res/js', express.static(__dirname + '/res/js'));
+app.use('/node_modules/socket.io/node_modules/socket.io-client', express.static(__dirname + '/node_modules/socket.io/node_modules/socket.io-client'));
+
+
 app.use('/res/js/map.js', express.static(__dirname + '/res/js/map.js'));
 
 
