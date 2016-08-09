@@ -1,5 +1,7 @@
-var app = require('http').createServer(handler);
-var io = require('socket.io')(app);
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var fs = require('fs');
 
 var search = require('./res/js/util.js');
@@ -24,22 +26,18 @@ var long = config.long;
 
 var location = [lat, long];
 
+app.listen(port);
+console.log('Server started on 127.0.0.1:' + port);
+
+
 //search.search(loginMethod, users, pass, location);
 
-app.listen(port);
-console.log('Server started at 127.0.0.1:' + port);
+app.get('/', function(req, res) {
+	res.sendFile(__dirname + '/map.html');
+});
 
-function handler (req, res) {
-    fs.readFile(__dirname + '/map.html',
-    function (err, data) {
-			if (err) {
-    		res.writeHead(500);
-    		return res.end('Error loading... Curl up and cri everytime');
-    	}
-    	res.writeHead(200);
-    	res.end(data);
-  });
-}
+app.use('/res/js/map.js', express.static(__dirname + '/res/js/map.js'));
+
 
 io.on('connection', function (socket) {
 	console.log('A user connected');
