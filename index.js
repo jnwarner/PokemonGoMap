@@ -24,10 +24,10 @@ var long = config.long;
 
 var location = [lat, long];
 
-search.search(loginMethod, users, pass, location);
+//search.search(loginMethod, users, pass, location);
 
 app.listen(port);
-console.log("Server started at 127.0.0.1:" + port);
+console.log('Server started at 127.0.0.1:' + port);
 
 function handler (req, res) {
     fs.readFile(__dirname + '/map.html',
@@ -42,8 +42,5 @@ function handler (req, res) {
 }
 
 io.on('connection', function (socket) {
-	socket.emit('news', { hello: 'world' });
-	socket.on('my other event', function (data) {
-    	console.log(data);
-	});
+	console.log('A user connected');
 });

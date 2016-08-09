@@ -24,8 +24,8 @@ module.exports = {
     	client.setAuthInfo(auth, token);
     	client.setPosition(lat, long);
     	client.on('request', console.dir);
-      client.on('response', console.dir);
-    	console.log('Logging into '+user+' with loginMethod '+auth+' at Lat '+lat+' Long '+long);
+        client.on('response', console.dir);
+    	console.log('Logging into '+user+' with login method '+auth+' at Lat '+lat+' Long '+long);
     	return client.init();
     }).then(() => {
     	console.log('Authenticated, waiting for first map refresh (10s)');
@@ -38,7 +38,7 @@ module.exports = {
                 console.log('Has ' + cell.catchable_pokemons.length + ' catchable Pokemon');
                 return bluebird.resolve(cell.catchable_pokemons).each(catchablePokemon => {
                     console.log(' - A ' + pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId,
-                        catchablePokemon.pokemon_id) + 'id '+catchablePokemon.pokemon_id+' IV of '+/*pogobuf.Utils.getIVsFromPokemon(catchablePokemon)+*/' is asking you to catch it.');
+                        catchablePokemon.pokemon_id) + ' id: ' + catchablePokemon.pokemon_id + ' IV: ' + catchablePokemon.individualAttack + ' popped up.');
                 });
             });
         }, 10 * 1000);

@@ -1,10 +1,12 @@
 <html lang="en">
 	<head>
 		<title>Pokemon Go Map</title>
-		<!--<script src="res/js/map.js." type="text/javascript"></script>!-->
+		<script src="res/js/map.js." type="text/javascript"></script>
+		<script src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
+		<link rel="stylesheet" href="res/css/map.css">
 
 		<style>
 			#map {
@@ -29,6 +31,8 @@
 		<div id="map"></div>
 	</body>
 	<script>
+		
+		//var socket = io();
 		
 		$(document).ready(function() {
 			addGymMarker(4, 4, 'Instinct');
@@ -77,7 +81,7 @@
 					lng: 4
 				},
 				zoom: 8,
-				styles: coolStyle,
+				styles: pGoStyle,
 				fullscreenControl: true,
 				rotateControl: true,
 				streetViewControl: false,
@@ -119,9 +123,13 @@
 				draggable: false
 			});
 
-			marker.addListener('click', function() {
+			marker.addListener('mouseover', function() {
 				infoWindow.open(map, marker);
 			});
+			
+			marker.addListener('mouseout', function() {
+				infoWindow.close();
+			})
 		}
 
 		function addPokeMarker(lat, lng, type, expire) {
@@ -146,9 +154,13 @@
 				draggable: false
 			});
 
-			marker.addListener('click', function() {
+			marker.addListener('mouseover', function() {
 				infoWindow.open(map, marker);
 			});
+			
+			marker.addListener('mouseout', function() {
+				infoWindow.close();
+			})
 		}
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKBNvVI4Z3i7lK1D0RyjHdgDpgUsy5ot8&callback=initMap"></script>
