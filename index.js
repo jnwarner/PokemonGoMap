@@ -29,19 +29,18 @@ var location = [lat, long];
 app.listen(port);
 console.log('Server started on 127.0.0.1:' + port);
 
-
-//search.search(loginMethod, users, pass, location);
-
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/map.html');
 });
 
 app.use('/res', express.static(__dirname + '/res'));
 app.use('/res/js', express.static(__dirname + '/res/js'));
+app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));
+app.use('/res/icons', express.static(__dirname + '/res/icons'));
 app.use('/node_modules/socket.io/node_modules/socket.io-client', express.static(__dirname + '/node_modules/socket.io/node_modules/socket.io-client'));
 
 
-//app.use('/res/js/map.js', express.static(__dirname + '/res/js/map.js'));
+//search.search(loginMethod, users, pass, location);
 
 
 io.on('connection', function (socket) {

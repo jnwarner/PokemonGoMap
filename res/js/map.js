@@ -64,9 +64,7 @@ $(document).ready(function() {
 
 		function addGymMarker(lat, lng, team) {				// Maybe in future take gym object
 			team = team.toLowerCase();
-			var image = 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png';
-			//var image = icons[team].icon;
-			//console.log(icons[team].icon);						// No custom icons???
+			var image = '/res/icons/' + team + '.png';
 			var infoContent = '<div id="content">' + 
 				'<div id="siteNotice">' +
 				'</div>' + 
@@ -97,7 +95,7 @@ $(document).ready(function() {
 		}
 
 		function addPokeMarker(lat, lng, type, expire) {
-			var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';	// No custom icons???
+			var image = '/res/poke-cons/' + type + '.png';
 			var infoContent = '<div id="content">' + 
 				'<div id="siteNotice">' +
 				'</div>' + 
