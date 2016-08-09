@@ -1,14 +1,9 @@
-$(document).ready(function() {
-			addGymMarker(4, 4, 'Instinct');
-			addGymMarker(4.3, 4, 'Valor');
-			addPokeMarker(4, 4.3, 151, '6:66');
-		});
-		
 		var map;
 		var locationMarker;
 		var pokeMarkerCount = 0;
 		var gymCount = 0;
 		var pokestopCount = 0;
+
 		
 		var iconBase = '/res/icons/';
 		var icons = {
@@ -95,7 +90,13 @@ $(document).ready(function() {
 		}
 
 		function addPokeMarker(lat, lng, type, expire) {
-			var image = '/res/poke-cons/' + type + '.png';
+			var imageSrc = 'res/poke-cons/' + type + '.ico';
+			var image = {
+				url: imageSrc,
+				scaledSize: new google.maps.Size(32, 32),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(16, 16)
+			}
 			var infoContent = '<div id="content">' + 
 				'<div id="siteNotice">' +
 				'</div>' + 
