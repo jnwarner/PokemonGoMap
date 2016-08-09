@@ -1,11 +1,16 @@
 <html lang="en">
 	<head>
 		<title>Pokemon Go Map</title>
-		<script src="http://localhost/res/js/map.js." type="text/javascript"></script>
+		<!-- Import map functions !-->
+		<script src="/res/js/map.js" type="text/javascript"></script>
+		<!-- Import socket.io functions !-->
 		<script src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+		<!-- Import JQuery !-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Import foundation !-->
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css">
+		<!-- Import stylesheet !-->
 		<link rel="stylesheet" href="/res/css/map.css">
 
 		<style>
@@ -32,7 +37,7 @@
 	</body>
 	<script>
 		
-		//var socket = io();
+		var socket = io();
 		
 		$(document).ready(function() {
 			addGymMarker(4, 4, 'Instinct');

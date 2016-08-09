@@ -41,7 +41,7 @@ app.use('/res/js', express.static(__dirname + '/res/js'));
 app.use('/node_modules/socket.io/node_modules/socket.io-client', express.static(__dirname + '/node_modules/socket.io/node_modules/socket.io-client'));
 
 
-app.use('/res/js/map.js', express.static(__dirname + '/res/js/map.js'));
+//app.use('/res/js/map.js', express.static(__dirname + '/res/js/map.js'));
 
 
 io.on('connection', function (socket) {
