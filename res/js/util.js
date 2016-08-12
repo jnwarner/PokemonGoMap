@@ -2,7 +2,6 @@ const pogobuf = require('pogobuf'),
 	  POGOProtos = require('node-pogo-protos'),
 	  bluebird = require('bluebird'),
 	  Long = require('long'),
-<<<<<<< HEAD
 	  socket = require('socket.io')();
 
 module.exports = {
@@ -68,8 +67,8 @@ module.exports = {
 		var longO = long + newLong * 180/Math.PI;
 		return [latO, longO];
 		}*/
-=======
-		nodeGeocoder = require('node-geocoder');
+
+
 module.exports = {
   search: function (auth, user, pass, location) {
 		var login = new pogobuf.PTCLogin(),
