@@ -1,29 +1,20 @@
 <html lang="en">
 	<head>
 		<title>Pokemon Go Map</title>
-		<!-- Import map functions !-->
+		<!-- Import Map Functions !-->
 		<script src="/res/js/map.js" type="text/javascript"></script>
-		<!-- Import socket.io !-->
-		<script src="/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+		<!-- Import Socket.io !-->
+		<script src="/socket.io/socket.io.js"></script>
 		<!-- Import JQuery !-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<!-- Import foundation !-->
+		<!-- Import Foundation !-->
 		<script src="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css"/>
-		<!-- Import stylesheet !-->
+		<!-- Import Stylesheet !-->
 		<link rel="stylesheet" href="/res/css/map.css"/>
-		<!-- Import favicon !-->
+		<!-- Import Favicon !-->
 		<link rel="icon" href="/res/icons/icon.ico"/>
 		
-		<style>
-			#map {
-				height: 96%;
-				width: 100%;
-			}
-			.title-bar {
-				height: 4%;
-			}
-		</style>
 	</head>
 	<body>
 		<div class="title-bar">
@@ -33,13 +24,31 @@
 			</div>
 		</div>
 		<div class="settings">
-			
+			<!--
+			<ul class="accordion" data-accordion>
+				<li class="accordion-item is-active" data-accordion-item>
+					<a href="#" class="accordion-title">Accordion 1</a>
+					<div class="accordion-content" data-tab-content>
+					I would start in the open state, due to using the `is-active` state class.
+					</div>
+				</li>
+			</ul>
+			-->
 		</div>
 		<div id="map"></div>
 	</body>
 	<script>
 		
 		var socket = io();
+		
+		socket.on('connect', function(socket) {
+			console.log('connected');
+			
+		});
+		
+		socket.on('pokemon', function(socket) {
+				console.log('new pokemon');
+			});
 		
 		$(document).ready(function() {
 			addGymMarker(4, 4, 'Neutral');

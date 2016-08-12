@@ -1,4 +1,13 @@
-.gymMarker {
-	width: 200px;
-	height: 50px;
+#map {
+	height: 100%;
+	width: 100%;
+}
+
+.title-bar {
+	height: 40px;
+}
+
+.settings {
+	width: 100px;
+	background-color: #FFFFFF;
 }

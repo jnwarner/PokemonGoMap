@@ -5,6 +5,7 @@ var gymCount = 0;
 var pokestopCount = 0;
 
 
+
 var iconBase = '/res/icons/';
 var icons = {
 	neutral: {
@@ -40,7 +41,7 @@ function initMap() {
 			lng: 4
 		},
 		zoom: 8,
-		styles: pGoStyle,
+		styles: coolStyle,
 		fullscreenControl: true,
 		rotateControl: true,
 		streetViewControl: false,
