@@ -24,32 +24,36 @@ module.exports = {
     })
     .then(token => {
         client.setAuthInfo('ptc', token);
-        client.setPosition(lat, lng);
+        //client.setPosition(lat, lng);
         return client.init();
     })
     .then(() => {
-        var cellIDs = pogobuf.Utils.getCellIDs(lat, lng, 5);
-        return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0)));
-    })
-    .then(mapObjects => {
-        return mapObjects.map_cells;
-    })
-    .each(pokes => {
-        // Display gym information
-				if(pokes.catchable_pokemons.length > 0){
-					console.log(pokes.catchable_pokemons.length);
+			console.log('Begining loops at 10 second interval.');
+			var i = -1;
+			setInterval(() => {
+				i++;
+				var travel = this.offset(location, 3);
+				console.log(i + ' length '+travel.length);
+				if(i >= travel.length){
+					i = 0;
 				}
-				return bluebird.resolve(pokes.catchable_pokemons).each(catchablePokemon => {
-					console.log(catchablePokemon.pokemon_id);
-					console.log(' - A ' + pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' is asking you to catch it.');
-					var ts = (catchablePokemon.expiration_timestamp_ms.toNumber()-new Date().getTime())/1000;
-
-					console.log(ts);
-					console.log(catchablePokemon.latitude);
-					console.log(catchablePokemon.longitude);
-					//console.log(new Date().getTime());
-					//console.log(catchablePokemon.expiration_timestamp_ms);
+				lat = parseFloat(travel[i][0]);
+				lng = parseFloat(travel[i][1]);
+				console.log("lat: "+lat+" long: "+lng);
+				client.setPosition(lat, lng);
+				client.playerUpdate();
+        var cellIDs = pogobuf.Utils.getCellIDs(lat, lng, 5);
+        return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0))).then(mapObjects => {
+						return mapObjects.map_cells;
+				}).each(cells => {
+					return bluebird.resolve(cells.catchable_pokemons).each(catchablePokemon => {
+						var ts = (catchablePokemon.expiration_timestamp_ms.toNumber()-new Date().getTime())/60000;
+						ts = ts.toString().split(".");
+						ts = parseInt(ts[0]) +'m'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
+						console.log(' - A ' + catchablePokemon.pokemon_id +' '+ pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' at lat:'+catchablePokemon.latitude+' long:'+catchablePokemon.longitude+' expires:'+ts);
+					});
 				});
+			}, 10 * 1000);
     })
     .catch(console.error);},
 
