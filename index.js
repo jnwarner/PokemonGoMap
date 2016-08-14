@@ -43,4 +43,3 @@ search.search(loginMethod, users, pass, location);
 io.on('connection', function (socket) {
 	console.log('A client connected');
 });
-

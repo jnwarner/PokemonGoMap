@@ -2,7 +2,8 @@ const pogobuf = require('pogobuf'),
 	  POGOProtos = require('node-pogo-protos'),
 	  bluebird = require('bluebird'),
 	  Long = require('long'),
-	  nodeGeocoder = require('node-geocoder');
+	  nodeGeocoder = require('node-geocoder'),
+		map = require('./map.js');
 module.exports = {
   search: function (auth, user, pass, location) {
 		var login = new pogobuf.PTCLogin(),
@@ -33,13 +34,13 @@ module.exports = {
 			setInterval(() => {
 				i++;
 				var travel = this.offset(location, 3);
-				console.log(i + ' length '+travel.length);
+				//console.log(i + ' length '+travel.length);
 				if(i >= travel.length){
 					i = 0;
 				}
 				lat = parseFloat(travel[i][0]);
 				lng = parseFloat(travel[i][1]);
-				console.log("lat: "+lat+" long: "+lng);
+				//console.log("lat: "+lat+" long: "+lng);
 				client.setPosition(lat, lng);
 				client.playerUpdate();
         var cellIDs = pogobuf.Utils.getCellIDs(lat, lng, 5);
@@ -51,6 +52,7 @@ module.exports = {
 						ts = ts.toString().split(".");
 						ts = parseInt(ts[0]) +'m'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
 						console.log(' - A ' + catchablePokemon.pokemon_id +' '+ pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' at lat:'+catchablePokemon.latitude+' long:'+catchablePokemon.longitude+' expires:'+ts);
+						//io.emit(catchablePokemon.latitude+'.'+catchablePokemon.longitude+'.'+catchablePokemon.pokemon_id+'.'+ts);
 					});
 				});
 			}, 10 * 1000);

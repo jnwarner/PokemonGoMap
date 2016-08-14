@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="/res/css/map.css"/>
 		<!-- Import Favicon !-->
 		<link rel="icon" href="/res/icons/icon.ico"/>
-		
+
 	</head>
 	<body>
 		<div class="title-bar">
@@ -38,18 +38,18 @@
 		<div id="map"></div>
 	</body>
 	<script>
-		
+
 		var socket = io();
-		
+
 		socket.on('connect', function(socket) {
 			console.log('connected');
-			
+
 		});
-		
+
 		socket.on('pokemon', function(socket) {
 				console.log('new pokemon');
 			});
-		
+
 		$(document).ready(function() {
 			addGymMarker(4, 4, 'Neutral');
 			addGymMarker(4.3, 4, 'Valor');
