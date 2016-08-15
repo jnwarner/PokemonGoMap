@@ -48,7 +48,8 @@ module.exports = {
             return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0)))
             .then(mapObjects => {
                 return mapObjects.map_cells;
-            }).each(cells => {
+            })
+            .each(cells => {
                 return bluebird.resolve(cells.catchable_pokemons).each(catchablePokemon => {
                     var ts = (catchablePokemon.expiration_timestamp_ms.toNumber());
 
@@ -65,13 +66,23 @@ module.exports = {
 
                     ts = ts - new Date().getTime() / 60000;
                     ts = ts.toString().split('.');
-                    ts = parseInt(ts[0]) +'m'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
+                    ts = parseInt(ts[0]) + 'm'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
 
                     console.log(' - A ' + catchablePokemon.pokemon_id + ' ' + pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' at lat:' + catchablePokemon.latitude+' long:' + catchablePokemon.longitude + ' expires:' + ts);
 
                     io.emit('pokemon', newPokemon);
                 });
             });
+            /*.then(mapObjects => {
+                login.batchStart();
+                
+                mapObjects.map_cells.map(cell => cell.forts)
+                    .reduce((a, b) =>a.concat(b))
+                    .filter(fort => fort.type ===0)
+                    .forEach(fort => client.getGymDetails(fort.id, fort.latitude, fort.longitude));
+                    
+                return  login.batchCall();
+            });*/
         }, 10 * 1000);
     })
     .catch(console.error);},

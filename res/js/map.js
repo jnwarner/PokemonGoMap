@@ -3,6 +3,7 @@ var locationMarker;
 var pokeMarkerCount = 0;
 var gymCount = 0;
 var pokestopCount = 0;
+
 var pokemon = {
     name: 'null',
     id: 0,
@@ -13,11 +14,25 @@ var pokemon = {
     stamIV: 0,
     percentIV: 0
 };
+
+var player = {
+    name: 'null',
+    pokemon: pokemon
+};
+
+var gym = {
+    name: 'null',
+    team: 'null',
+    position: [0, 0],
+    players: [player]
+};
+
 var activePokemon = [
     pokemon
 ];
-
-
+var activeGyms = [
+    gym
+];
 
 var iconBase = '/res/icons/';
 var icons = {
@@ -71,41 +86,49 @@ function initMap() {
 	})
 }
 
-function addGymMarker(lat, lng, team) {				// Maybe in future take gym object
-	team = team.toLowerCase();
-	var imageSrc = '/res/icons/' + team + '.png';
-	var image = {
-		url: imageSrc,
-		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(32, 16)
-	}
-	var infoContent = '<div id="content">' + 
-		'<div id="siteNotice">' +
-		'</div>' + 
-		'<h4 class="firstHeading"> ' + team + ' Gym</h4>' +
-		'<div id="bodyContent">' +
-		'<p>Pokemon Gym</p>' + 
-		'</div>' + 
-		'</div>';
-	var infoWindow = new google.maps.InfoWindow({
-		content: infoContent
-	});
-	var pos = new google.maps.LatLng(lat, lng);
-	var marker = new google.maps.Marker({
-		position: pos,
-		map: map,
-		animation: google.maps.Animation.DROP,
-		icon: image, 		// Won't load image
-		draggable: false
-	});
+function addGymMarker(newGym) {				// Maybe in future take gym object
+    var notNew = false;
+    for (var i = 0; i < activeGyms.length; i++) {
+        if (activeGyms[i].name == newGym.name) {
+            notNew = true;
+        }
+    }
+    if (!notNew) {
+        team = team.toLowerCase();
+        var imageSrc = '/res/icons/' + gym.team + '.png';
+        var image = {
+            url: imageSrc,
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(32, 16)
+        }
+        var infoContent = '<div id="content">' + 
+            '<div id="siteNotice">' +
+            '</div>' + 
+            '<h4 class="firstHeading"> ' + gym.team + ' Gym</h4>' +
+            '<div id="bodyContent">' +
+            '<p>Pokemon Gym</p>' + 
+            '</div>' + 
+            '</div>';
+        var infoWindow = new google.maps.InfoWindow({
+            content: infoContent
+        });
+        var pos = new google.maps.LatLng(gym.position[0], gym.position[1]);
+        var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            icon: image, 		// Won't load image
+            draggable: false
+        });
 
-	marker.addListener('mouseover', function() {
-		infoWindow.open(map, marker);
-	});
+        marker.addListener('mouseover', function() {
+            infoWindow.open(map, marker);
+        });
 
-	marker.addListener('mouseout', function() {
-		infoWindow.close();
-	})
+        marker.addListener('mouseout', function() {
+            infoWindow.close();
+        });
+    }
 }
 
 function addPokeMarker(newPokemon) {
