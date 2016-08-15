@@ -45,9 +45,9 @@
 			console.log('connected');
 		});
 
-		socket.on('pokemon', function(msg) {
-				addPokeMarker(msg);
-			});
+		socket.on('pokemon', function(newPokemon) {
+				addPokeMarker(newPokemon);
+        });
 
 		/*$(document).ready(function() {
 			addGymMarker(4, 4, 'Neutral');

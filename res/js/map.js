@@ -4,6 +4,7 @@ var pokeMarkerCount = 0;
 var gymCount = 0;
 var pokestopCount = 0;
 var pokemon = {
+    name: 'null',
     id: 0,
     position: [0, 0],
     expire: 0.1,
@@ -110,23 +111,36 @@ function addGymMarker(lat, lng, team) {				// Maybe in future take gym object
 function addPokeMarker(newPokemon) {
     var notNew = false;
     for (var i = 0; i < activePokemon.length; i++) {
-        if (activePokemon[i] == newPokemon) {
+        if (activePokemon[i].id == newPokemon.id && 
+            activePokemon[i].position[0] == newPokemon.position[0] && 
+            activePokemon[i].position[1] == newPokemon.position[1] &&
+            newPokemon.expire > 0) {
             notNew = true;
             break;
         }
     }
     if (!notNew) {
+        var expire = newPokemon.expire;
+        //expire = expire.split('.');
+        //var expireMin = parseInt(expire[0]);
+        //var expireSec = parseInt(expire[1]);
+        
+        var expireMin = getTimeRemaining(newPokemon.expire).minutes;
+        var expireSec = getTimeRemaining(newPokemon.expire).seconds;
+        
+        console.log('New Pokemon | ' + newPokemon.id + ' | Expires in: ' + expireMin + 'm' + expireSec + 's');
+        
         var imageSrc = 'res/poke-cons/' + newPokemon.id + '.ico';
         var image = {
             url: imageSrc,
-            scaledSize: new google.maps.Size(50, 50),
+            scaledSize: new google.maps.Size(75, 75),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(20, 20)
         }
         var infoContent = '<div id="content">' + 
             '<div id="siteNotice">' +
             '</div>' + 
-            '<h4 class="firstHeading">Pokemon: ' + newPokemon.id + '</h4>' +
+            '<h4 class="firstHeading">' + newPokemon.id + ' : ' + newPokemon.name + '</h4>' +
             '<div id="bodyContent">' +
             '<p>Expires at <span id="pokeExpire">' + newPokemon.expire + '</span></p>' + 
             '</div>' + 
@@ -143,13 +157,29 @@ function addPokeMarker(newPokemon) {
             draggable: false
         });
 
-        marker.addListener('mouseover', function() {
+        var mouseOverListener = marker.addListener('mouseover', function() {
             infoWindow.open(map, marker);
         });
 
-        marker.addListener('mouseout', function() {
+        var mouseOutListener = marker.addListener('mouseout', function() {
             infoWindow.close();
         });
+        
+        var clickListener = marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+            google.maps.event.removeListener(mouseOutListener);
+        });
+        
         activePokemon.push(newPokemon);
+    }
+}
+
+function getTimeRemaining(ts){
+    ts = ts - new Date().getTime() / 60000;
+    ts = ts.toString().split('.');
+    //ts = parseInt(ts[0]) + 'm'+ (parseInt(ts[1]) * 60).toString().substring(0,2) + 's';
+    return {
+        minutes: parseInt(ts[0]),
+        seconds: (parseInt(ts[1]) * 60).toString().substring(0,2)
     }
 }
