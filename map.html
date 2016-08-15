@@ -43,18 +43,17 @@
 
 		socket.on('connect', function(socket) {
 			console.log('connected');
-
 		});
 
-		socket.on('pokemon', function(socket) {
-				console.log('new pokemon');
+		socket.on('pokemon', function(msg) {
+				addPokeMarker(msg);
 			});
 
-		$(document).ready(function() {
+		/*$(document).ready(function() {
 			addGymMarker(4, 4, 'Neutral');
 			addGymMarker(4.3, 4, 'Valor');
 			addPokeMarker(4, 4.3, 150, '6:66');
-		});
+		});*/
 
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKBNvVI4Z3i7lK1D0RyjHdgDpgUsy5ot8&callback=initMap"></script>

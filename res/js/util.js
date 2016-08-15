@@ -3,9 +3,10 @@ const pogobuf = require('pogobuf'),
 	  bluebird = require('bluebird'),
 	  Long = require('long'),
 	  nodeGeocoder = require('node-geocoder'),
-		map = require('./map.js');
+	  map = require('./map.js');
+
 module.exports = {
-  search: function (auth, user, pass, location) {
+  search: function (auth, user, pass, location, io) {
 		var login = new pogobuf.PTCLogin(),
     client = new pogobuf.Client(),
     geocoder = nodeGeocoder();
@@ -49,10 +50,18 @@ module.exports = {
 				}).each(cells => {
 					return bluebird.resolve(cells.catchable_pokemons).each(catchablePokemon => {
 						var ts = (catchablePokemon.expiration_timestamp_ms.toNumber()-new Date().getTime())/60000;
-						ts = ts.toString().split(".");
-						ts = parseInt(ts[0]) +'m'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
-						console.log(' - A ' + catchablePokemon.pokemon_id +' '+ pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' at lat:'+catchablePokemon.latitude+' long:'+catchablePokemon.longitude+' expires:'+ts);
-						//io.emit(catchablePokemon.latitude+'.'+catchablePokemon.longitude+'.'+catchablePokemon.pokemon_id+'.'+ts);
+
+                        var newPokemon = {
+                            id: catchablePokemon.pokemon_id,
+                            position: [catchablePokemon.latitude, catchablePokemon.longitude],
+                            expire: ts,
+                            attkIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).att,
+                            defIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).def,
+                            stamIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).stam,
+                            percentIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon)
+                        }
+						console.log(' - A ' + catchablePokemon.pokemon_id +' '+ pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id) + ' at lat:'+catchablePokemon.latitude+' long:'+catchablePokemon.longitude+' expires:'+parseInt(ts[0]) +'m'+(parseInt(ts[1])*60).toString().substring(0,2)+'s');
+						io.emit('pokemon', newPokemon);
 					});
 				});
 			}, 10 * 1000);

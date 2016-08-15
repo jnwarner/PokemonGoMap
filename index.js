@@ -37,9 +37,13 @@ app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));
 app.use('/res/icons', express.static(__dirname + '/res/icons'));
 
 
-search.search(loginMethod, users, pass, location);
+search.search(loginMethod, users, pass, location, io);
 
 
 io.on('connection', function (socket) {
 	console.log('A client connected');
 });
+
+io.on('test', function(socket) {
+    console.log('Test Socket Connected');
+})
