@@ -190,11 +190,6 @@ function addPokeMarker(newPokemon) {
             infoWindow.close();
         });
 
-        var clickListener = marker.addListener('click', function() {
-            infoWindow.open(map, marker);
-            google.maps.event.removeListener(mouseOutListener);
-        });
-
         activePokemon.push(newPokemon);
     }
 }
@@ -209,6 +204,8 @@ function getTimeRemaining(ts){
     }
 }
 
-function changeCenter(location){
-  map.setCenter(location);
+function changeCenter(loc){
+  map.setCenter(loc);
+    //map.panTo(new google.maps.LatLng(loc.lat, loc.lng));
+    console.log(loc);
 }

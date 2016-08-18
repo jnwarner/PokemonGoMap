@@ -26,10 +26,7 @@
 			</div>
 		</div>
 		<div id="sidenav">
-              <a href="#">About</a>
-              <a href="#">Services</a>
-              <a href="#">Clients</a>
-              <a href="#">Contact</a>
+             
 		</div>
 		<div id="map"></div>
 	</body>
@@ -41,18 +38,17 @@
 			console.log('connected');
 		});
 
-    socket.on('init', function(loc) {
-        //map.setCenter(loc);
-				changeCenter(loc);
-        //console.log(loc);
-    });
+        socket.on('init', function(loc) {
+            //map.setCenter(loc);
+            changeCenter(loc);
+            //console.log(loc);
+        });
 
 		socket.on('pokemon', function(newPokemon) {
 			addPokeMarker(newPokemon);
         });
 
 		$(document).ready(function() {
-			changeCenter(90, 90);
 			//addGymMarker(4, 4, 'Neutral');
 			//addGymMarker(4.3, 4, 'Valor');
 			//addPokeMarker(4, 4.3, 150, '6:66');

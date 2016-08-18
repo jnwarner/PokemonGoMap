@@ -1,8 +1,8 @@
 #map {
 	height: 96%;
-	width: 100%;
-    transition: width .5s;
+    width: 100%;
     float: right;
+    transition: width .5s;
 }
 
 .title-bar {
@@ -20,6 +20,7 @@
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    background-color: #2E2E2E;
 }
 
 .sidenav a {

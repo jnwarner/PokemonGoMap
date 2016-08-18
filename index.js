@@ -19,7 +19,7 @@ var loginMethod = config.auth;
 var users = config.accounts;
 var pass = config.pass;
 var lat = config.lat;	//String will be converted to float in search (Same for long)
-var lng = config.long;
+var lng = config.lng;
 
 var location = [lat, lng];
 
@@ -37,7 +37,7 @@ app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));
 app.use('/res/icons', express.static(__dirname + '/res/icons'));
 
 
-//search.search(loginMethod, users, pass, location, io);
+search.search(loginMethod, users, pass, location, io);
 
 
 io.on('connection', function (socket) {
