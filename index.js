@@ -37,16 +37,16 @@ app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));
 app.use('/res/icons', express.static(__dirname + '/res/icons'));
 
 
-//search.search(loginMethod, users, pass, location, io);
+search.search(loginMethod, users, pass, location, io);
 
 
 io.on('connection', function (socket) {
 	console.log('A client connected');
     var location = {
-        lat: config.lat,
-        lng: config.lng
+        lat: lat,
+        lng: lng
     };
-    socket.emit('init', location);
+    socket.broadcast.emit('init', location);
 });
 
 io.on('test', function(socket) {

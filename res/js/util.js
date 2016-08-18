@@ -24,7 +24,11 @@ module.exports = {
             return login.login(user, pass);
         })
         .then(token => {
-            client.setAuthInfo('ptc', token);
+					if(auth.toLowerCase() == 'ptc'){
+						client.setAuthInfo('ptc', token);
+					}else{
+						client.setAuthInfo('google', token);
+					}
             //client.setPosition(lat, lng);
             return client.init();
         })
@@ -44,7 +48,7 @@ module.exports = {
             client.setPosition(lat, lng);
             client.playerUpdate();
             var cellIDs = pogobuf.Utils.getCellIDs(lat, lng, 5);
-            
+
             return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0)))
             .then(mapObjects => {
                 return mapObjects.map_cells;
@@ -64,7 +68,7 @@ module.exports = {
                         percentIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon)
                     };
 
-                    ts = ts - new Date().getTime() / 60000;
+                    ts = (ts - new Date().getTime()) / 60000;
                     ts = ts.toString().split('.');
                     ts = parseInt(ts[0]) + 'm'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
 
@@ -75,12 +79,12 @@ module.exports = {
             });
             /*.then(mapObjects => {
                 login.batchStart();
-                
+
                 mapObjects.map_cells.map(cell => cell.forts)
                     .reduce((a, b) =>a.concat(b))
                     .filter(fort => fort.type ===0)
                     .forEach(fort => client.getGymDetails(fort.id, fort.latitude, fort.longitude));
-                    
+
                 return  login.batchCall();
             });*/
         }, 10 * 1000);
@@ -134,23 +138,23 @@ module.exports = {
 
         return travel;
     },
-    
+
     distance: function(origin, dist, dir) { //Direction N = 0, E = 90, S = 180, W = 270
         var R = 6378.1;
         var latOld = this.toRad(origin[0]);
         var longOld = this.toRad(origin[1]);
-        
+
         dir = this.toRad(dir);
         var latNew = Math.asin(Math.sin(latOld)*Math.cos(dist/R) + Math.cos(latOld)*Math.sin(dist/R)*Math.cos(dir));
         var longNew = longOld + Math.atan2(Math.sin(dir)*Math.sin(dist/R)*Math.cos(latOld), Math.cos(dist/R)-Math.sin(latOld)*Math.sin(latNew));
-        
+
         return [this.toDeg(latNew),this.toDeg(longNew)];
     },
-    
+
 	toRad: function(number){
 		return (number * (Math.PI/180));
 	},
-    
+
 	toDeg: function(number){
 		return (number * (180/Math.PI));
 	}

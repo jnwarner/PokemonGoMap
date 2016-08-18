@@ -101,13 +101,13 @@ function addGymMarker(newGym) {				// Maybe in future take gym object
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(32, 16)
         }
-        var infoContent = '<div id="content">' + 
+        var infoContent = '<div id="content">' +
             '<div id="siteNotice">' +
-            '</div>' + 
+            '</div>' +
             '<h4 class="firstHeading"> ' + gym.team + ' Gym</h4>' +
             '<div id="bodyContent">' +
-            '<p>Pokemon Gym</p>' + 
-            '</div>' + 
+            '<p>Pokemon Gym</p>' +
+            '</div>' +
             '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: infoContent
@@ -134,8 +134,8 @@ function addGymMarker(newGym) {				// Maybe in future take gym object
 function addPokeMarker(newPokemon) {
     var notNew = false;
     for (var i = 0; i < activePokemon.length; i++) {
-        if (activePokemon[i].id == newPokemon.id && 
-            activePokemon[i].position[0] == newPokemon.position[0] && 
+        if (activePokemon[i].id == newPokemon.id &&
+            activePokemon[i].position[0] == newPokemon.position[0] &&
             activePokemon[i].position[1] == newPokemon.position[1] &&
             newPokemon.expire > 0) {
             notNew = true;
@@ -147,12 +147,14 @@ function addPokeMarker(newPokemon) {
         //expire = expire.split('.');
         //var expireMin = parseInt(expire[0]);
         //var expireSec = parseInt(expire[1]);
-        
+
         var expireMin = getTimeRemaining(newPokemon.expire).minutes;
         var expireSec = getTimeRemaining(newPokemon.expire).seconds;
-        
+
+        var expire = expireMin+'m'+expireSec+'s'
+
         console.log('New Pokemon | ' + newPokemon.id + ' | Expires in: ' + expireMin + 'm' + expireSec + 's');
-        
+
         var imageSrc = 'res/poke-cons/' + newPokemon.id + '.ico';
         var image = {
             url: imageSrc,
@@ -160,13 +162,13 @@ function addPokeMarker(newPokemon) {
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(20, 20)
         }
-        var infoContent = '<div id="content">' + 
+        var infoContent = '<div id="content">' +
             '<div id="siteNotice">' +
-            '</div>' + 
+            '</div>' +
             '<h4 class="firstHeading">' + newPokemon.id + ' : ' + newPokemon.name + '</h4>' +
             '<div id="bodyContent">' +
-            '<p>Expires at <span id="pokeExpire">' + newPokemon.expire + '</span></p>' + 
-            '</div>' + 
+            '<p>Expires at <span id="pokeExpire">' + expire + '</span></p>' +
+            '</div>' +
             '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: infoContent
@@ -187,22 +189,26 @@ function addPokeMarker(newPokemon) {
         var mouseOutListener = marker.addListener('mouseout', function() {
             infoWindow.close();
         });
-        
+
         var clickListener = marker.addListener('click', function() {
             infoWindow.open(map, marker);
             google.maps.event.removeListener(mouseOutListener);
         });
-        
+
         activePokemon.push(newPokemon);
     }
 }
 
 function getTimeRemaining(ts){
-    ts = ts - new Date().getTime() / 60000;
+    ts = (ts - new Date().getTime()) / 60000;
     ts = ts.toString().split('.');
     //ts = parseInt(ts[0]) + 'm'+ (parseInt(ts[1]) * 60).toString().substring(0,2) + 's';
     return {
         minutes: parseInt(ts[0]),
         seconds: (parseInt(ts[1]) * 60).toString().substring(0,2)
     }
+}
+
+function changeCenter(location){
+  map.setCenter(location);
 }
