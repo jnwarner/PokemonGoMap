@@ -24,11 +24,11 @@ module.exports = {
             return login.login(user, pass);
         })
         .then(token => {
-					if(auth.toLowerCase() == 'ptc'){
-						client.setAuthInfo('ptc', token);
-					}else{
-						client.setAuthInfo('google', token);
-					}
+            if(auth.toLowerCase() == 'ptc'){
+                client.setAuthInfo('ptc', token);
+            }else{
+                client.setAuthInfo('google', token);
+            }
             //client.setPosition(lat, lng);
             return client.init();
         })
