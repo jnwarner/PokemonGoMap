@@ -3,6 +3,8 @@
 		<title>Pokemon Go Map</title>
 		<!-- Import Map Functions !-->
 		<script src="/res/js/map.js" type="text/javascript"></script>
+        <!-- Import Nav Functions !-->
+        <script src="/res/js/sideMenu.js" type="text/javascript"></script> 
 		<!-- Import Socket.io !-->
 		<script src="/socket.io/socket.io.js"></script>
 		<!-- Import JQuery !-->
@@ -19,34 +21,33 @@
 	<body>
 		<div class="title-bar">
 			<div class="title-bar-left">
-				<button class="menu-icon" type="button"></button>
+				<span class="menu-icon" onclick="toggleNav()"></span>
 				<span class="title-bar-title">Pokemon GO Map</span>
 			</div>
 		</div>
-		<div class="settings">
-			<!--
-			<ul class="accordion" data-accordion>
-				<li class="accordion-item is-active" data-accordion-item>
-					<a href="#" class="accordion-title">Accordion 1</a>
-					<div class="accordion-content" data-tab-content>
-					I would start in the open state, due to using the `is-active` state class.
-					</div>
-				</li>
-			</ul>
-			-->
+		<div id="sidenav">
+              <a href="#">About</a>
+              <a href="#">Services</a>
+              <a href="#">Clients</a>
+              <a href="#">Contact</a>
 		</div>
 		<div id="map"></div>
 	</body>
 	<script>
 
 		var socket = io();
-
+        
 		socket.on('connect', function(socket) {
 			console.log('connected');
 		});
+        
+        socket.on('init', function(loc) {
+            map.setCenter(loc);
+            console.log(loc);
+        })
 
 		socket.on('pokemon', function(newPokemon) {
-				addPokeMarker(newPokemon);
+			addPokeMarker(newPokemon);
         });
 
 		/*$(document).ready(function() {
@@ -56,5 +57,6 @@
 		});*/
 
 	</script>
+    <!-- Import Google Maps !-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKBNvVI4Z3i7lK1D0RyjHdgDpgUsy5ot8&callback=initMap"></script>
 </html>

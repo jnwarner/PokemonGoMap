@@ -19,9 +19,9 @@ var loginMethod = config.auth;
 var users = config.accounts;
 var pass = config.pass;
 var lat = config.lat;	//String will be converted to float in search (Same for long)
-var long = config.long;
+var lng = config.long;
 
-var location = [lat, long];
+var location = [lat, lng];
 
 http.listen(port, function(){
 	console.log('listening on 127.0.0.1:' + port);
@@ -37,11 +37,16 @@ app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));
 app.use('/res/icons', express.static(__dirname + '/res/icons'));
 
 
-search.search(loginMethod, users, pass, location, io);
+//search.search(loginMethod, users, pass, location, io);
 
 
 io.on('connection', function (socket) {
 	console.log('A client connected');
+    var location = {
+        lat: config.lat,
+        lng: config.lng
+    };
+    socket.emit('init', location);
 });
 
 io.on('test', function(socket) {
