@@ -137,23 +137,17 @@ function addPokeMarker(newPokemon) {
         if (activePokemon[i].id == newPokemon.id &&
             activePokemon[i].position[0] == newPokemon.position[0] &&
             activePokemon[i].position[1] == newPokemon.position[1] &&
-            newPokemon.expire > 0) {
+            getTimeRemaining(newPokemon.expire).minutes > 0) {
             notNew = true;
             break;
         }
     }
     if (!notNew) {
         var expire = newPokemon.expire;
-        //expire = expire.split('.');
-        //var expireMin = parseInt(expire[0]);
-        //var expireSec = parseInt(expire[1]);
+        expire = getTimeRemaining(newPokemon.expire);
+        expire = expire.minutes + 'm' + expire.seconds + 's';
 
-        var expireMin = getTimeRemaining(newPokemon.expire).minutes;
-        var expireSec = getTimeRemaining(newPokemon.expire).seconds;
-
-        var expire = expireMin+'m'+expireSec+'s'
-
-        console.log('New Pokemon | ' + newPokemon.id + ' | Expires in: ' + expireMin + 'm' + expireSec + 's');
+        console.log('New Pokemon | ' + newPokemon.id + ' | Expires in: ' + expire);
 
         var imageSrc = 'res/poke-cons/' + newPokemon.id + '.ico';
         var image = {
@@ -205,7 +199,7 @@ function getTimeRemaining(ts){
 }
 
 function changeCenter(loc){
-  map.setCenter(loc);
+    //map.setCenter(loc);
     //map.panTo(new google.maps.LatLng(loc.lat, loc.lng));
     console.log(loc);
 }

@@ -19,15 +19,17 @@
 
 	</head>
 	<body>
-		<div class="title-bar">
-			<div class="title-bar-left">
-				<span class="menu-icon" onclick="toggleNav()"></span>
-				<span class="title-bar-title">Pokemon GO Map</span>
-			</div>
-		</div>
-		<div id="sidenav">
-             
-		</div>
+		<div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="left-off-canvas-menu">
+                </aside>
+            </div>
+        </div>
 		<div id="map"></div>
 	</body>
 	<script>
@@ -41,6 +43,7 @@
         socket.on('init', function(loc) {
             //map.setCenter(loc);
             changeCenter(loc);
+            console.log(loc);
             //console.log(loc);
         });
 
@@ -53,6 +56,14 @@
 			//addGymMarker(4.3, 4, 'Valor');
 			//addPokeMarker(4, 4.3, 150, '6:66');
 		});
+        
+        $(document).foundation();
+        $(".off-canvas-submenu").hide();
+        $(".off-canvas-submenu-call").click(function() {
+            var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '+' : '-';
+            $(this).parent().next(".off-canvas-submenu").slideToggle('fast');
+            $(this).find("span").text(icon);
+        });
 
 	</script>
     <!-- Import Google Maps !-->

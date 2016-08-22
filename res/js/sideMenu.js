@@ -1,4 +1,4 @@
-var open = false;
+/*var open = false;
 
 function toggleNav() {
     if (open) {
@@ -9,4 +9,5 @@ function toggleNav() {
         //document.getElementById("map").style.width = "90%"
     }
     open = !open;
-}
+}*/
+

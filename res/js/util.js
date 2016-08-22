@@ -19,8 +19,10 @@ module.exports = {
             if (!location.length) {
                 throw Error('No location found');
             }
-            lat = parseFloat(location[0]);//.latitude;
-            lng = parseFloat(location[1]);//.longitude;
+            //lat = parseFloat(location[0]);//.latitude;
+            //lng = parseFloat(location[1]);//.longitude;
+            lat = location[0];
+            lng = location[1];
             return login.login(user, pass);
         })
         .then(token => {
