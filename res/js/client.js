@@ -2,8 +2,8 @@ const pogobuf = require('pogobuf'),
 	  POGOProtos = require('node-pogo-protos'),
 	  bluebird = require('bluebird'),
 	  Long = require('long'),
-	  nodeGeocoder = require('node-geocoder'),
-	  map = require('./map.js');
+	  nodeGeocoder = require('node-geocoder');
+	  //map = require('./map.js');
 
 module.exports = {
     init: function (auth, user, pass, location) {
@@ -16,9 +16,14 @@ module.exports = {
         } else {
             var login = new pogobuf.GoogleLogin();
         }
-        var token = login.login(user, pass);
-        client.setAuthInfo(auth, token);
-        console.log(client.init());
-        
+        return login.login(user, pass)
+        .then (token => {
+            client.setAuthInfo(auth, token);
+            return client.init();
+        })
+        .then(() => {
+            console.log('[LOGIN] | ' + user);
+        })
+        .catch(console.error);
     }
 }
