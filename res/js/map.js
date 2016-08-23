@@ -7,7 +7,8 @@ var pokestopCount = 0;
 var pokemon = {
     name: 'null',
     id: 0,
-    position: [0, 0],
+    lat: 0,
+    lng: 0,
     expire: 0.1,
     attkIV: 0,
     defIV: 0,
@@ -55,7 +56,7 @@ function initMap() {
 			lng: 4
 		},
 		zoom: 17,
-		styles: coolStyle,
+		styles: pGoStyle,
 		fullscreenControl: true,
 		rotateControl: true,
 		streetViewControl: false,
@@ -73,7 +74,6 @@ function initMap() {
 }
 
 function addGymMarker(newGym) {
-    console.log(newGym);
     var notNew = false;
     for (var i = 0; i < activeGyms.length; i++) {
         if (activeGyms[i].name == newGym.name) {
@@ -115,15 +115,17 @@ function addGymMarker(newGym) {
         marker.addListener('mouseout', function() {
             infoWindow.close();
         });
+        activeGyms.push(newGym);
     }
+    
 }
 
 function addPokeMarker(newPokemon) {
     var notNew = false;
     for (var i = 0; i < activePokemon.length; i++) {
         if (activePokemon[i].id == newPokemon.id &&
-            activePokemon[i].position[0] == newPokemon.position[0] &&
-            activePokemon[i].position[1] == newPokemon.position[1] &&
+            activePokemon[i].lat == newPokemon.lat &&
+            activePokemon[i].lng == newPokemon.lng &&
             getTimeRemaining(newPokemon.expire).minutes > 0) {
             notNew = true;
             break;
@@ -154,7 +156,7 @@ function addPokeMarker(newPokemon) {
         var infoWindow = new google.maps.InfoWindow({
             content: infoContent
         });
-        var pos = new google.maps.LatLng(newPokemon.position[0], newPokemon.position[1]);
+        var pos = new google.maps.LatLng(newPokemon.lat, newPokemon.lng);
         var marker = new google.maps.Marker({
             position: pos,
             map: map,
@@ -187,8 +189,6 @@ function getTimeRemaining(ts){
 
 function changeCenter(loc){
     map.setCenter(loc);
-    //map.panTo(new google.maps.LatLng(loc.lat, loc.lng));
-    console.log(loc);
 }
 
 function getTeam(color) {

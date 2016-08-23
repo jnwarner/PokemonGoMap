@@ -53,7 +53,8 @@ module.exports = {
                     var newPokemon = {
                         name: pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id),
                         id: catchablePokemon.pokemon_id,
-                        position: [catchablePokemon.latitude, catchablePokemon.longitude],
+                        lat: catchablePokemon.latitude,
+                        lng: catchablePokemon.longitude,
                         expire: ts,
                         attkIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).att,
                         defIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).def,
@@ -112,9 +113,7 @@ module.exports = {
                 console.log('Trainer: ' + highest.trainer_public_profile.name + ', level ' +
                     highest.trainer_public_profile.level);
             }
-                
-                console.log(chalk.red(fortData.latitude));
-                
+                            
             var newGym = {
                 name: gym.name,
                 team: pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.TeamColor, fortData.owned_by_team),

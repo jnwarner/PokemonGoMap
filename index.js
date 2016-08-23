@@ -45,7 +45,7 @@ app.use('/res/icons', express.static(__dirname + '/res/icons'));            // L
 //search.search(loginMethod, users, pass, location, io);   // Begin search with client
 
 bot.init(loginMethod, users, pass, location, io);
-//bot.listPokes(location);
+bot.listPokes(location);
 bot.listGyms(location);
 
 

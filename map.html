@@ -41,10 +41,7 @@
 		});
 
         socket.on('init', function(loc) {
-            //map.setCenter(loc);
             changeCenter(loc);
-            console.log(loc);
-            //console.log(loc);
         });
 
 		socket.on('pokemon', function(newPokemon) {
