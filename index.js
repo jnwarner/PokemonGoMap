@@ -5,6 +5,7 @@ var io = require('socket.io')(http);            // Import Socket.io
 var fs = require('fs');                         // Import File Read/Write
 var pogobuf = require('pogobuf');               // Import Pogobuf
 var POGOProtos = require('node-pogo-protos');   // Import Pogo-Protos
+var chalk = require('chalk');
 
 var bot = require('./res/js/client.js');
 
@@ -27,8 +28,6 @@ var location = {
     lng: lng
 };
 
-var location = [lat, lng];                      // Init Location array
-
 http.listen(port, function(){                       // Start Http Server
 	console.log('listening on 127.0.0.1:' + port);  // Log Server Start
 });
@@ -45,15 +44,13 @@ app.use('/res/icons', express.static(__dirname + '/res/icons'));            // L
 
 //search.search(loginMethod, users, pass, location, io);   // Begin search with client
 
-bot.init(loginMethod, users, pass, location);
+bot.init(loginMethod, users, pass, location, io);
+//bot.listPokes(location);
+bot.listGyms(location);
 
 
 io.on('connection', function (socket) {                  // On client connection...
 	console.log('A client connected');                   // Log connection
-    var location = {                                     // Create location object
-        lat: lat,
-        lng: lng
-    };
     socket.emit('init', location);                       // Send location
 });
 

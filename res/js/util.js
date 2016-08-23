@@ -16,13 +16,13 @@ module.exports = {
         }
             geocoder.geocode('Columbia, Missouri')
         .then(loc => {
-            if (!location.length) {
-                throw Error('No location found');
-            }
+            //if (!location.length) {
+            //    throw Error('No location found');
+            //}
             //lat = parseFloat(location[0]);//.latitude;
             //lng = parseFloat(location[1]);//.longitude;
-            lat = location[0];
-            lng = location[1];
+            lat = location.lat;
+            lng = location.lng;
             return login.login(user, pass);
         })
         .then(token => {
@@ -44,8 +44,8 @@ module.exports = {
             if(i >= travel.length){
                 i = 0;
             }
-            lat = parseFloat(travel[i][0]);
-            lng = parseFloat(travel[i][1]);
+            //lat = parseFloat(travel[i][0]);
+            //lng = parseFloat(travel[i][1]);
             //console.log("lat: "+lat+" long: "+lng);
             client.setPosition(lat, lng);
             client.playerUpdate();

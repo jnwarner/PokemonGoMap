@@ -23,8 +23,10 @@ var player = {
 var gym = {
     name: 'null',
     team: 'null',
-    position: [0, 0],
-    players: [player]
+    inBattle: false,
+    members: [0, 0],
+    lat: 0,
+    lng: 0
 };
 
 var activePokemon = [
@@ -33,22 +35,6 @@ var activePokemon = [
 var activeGyms = [
     gym
 ];
-
-var iconBase = '/res/icons/';
-var icons = {
-	neutral: {
-		icon: iconBase + 'neutral.png'
-	},
-	mystic: {
-		icon: iconBase + 'mystic.png'
-	},
-	valor: {
-		icon: iconBase + 'valor.png'
-	},
-	instinct: {
-		icon: iconBase + 'instinct.png'
-	}
-};
 
 var normalStyle = [];
 
@@ -68,7 +54,7 @@ function initMap() {
 			lat: 4,
 			lng: 4
 		},
-		zoom: 8,
+		zoom: 17,
 		styles: coolStyle,
 		fullscreenControl: true,
 		rotateControl: true,
@@ -86,7 +72,8 @@ function initMap() {
 	})
 }
 
-function addGymMarker(newGym) {				// Maybe in future take gym object
+function addGymMarker(newGym) {
+    console.log(newGym);
     var notNew = false;
     for (var i = 0; i < activeGyms.length; i++) {
         if (activeGyms[i].name == newGym.name) {
@@ -94,8 +81,8 @@ function addGymMarker(newGym) {				// Maybe in future take gym object
         }
     }
     if (!notNew) {
-        team = team.toLowerCase();
-        var imageSrc = '/res/icons/' + gym.team + '.png';
+        var team = newGym.team.toLowerCase();
+        var imageSrc = '/res/icons/' + team + '.png';
         var image = {
             url: imageSrc,
             origin: new google.maps.Point(0, 0),
@@ -104,7 +91,7 @@ function addGymMarker(newGym) {				// Maybe in future take gym object
         var infoContent = '<div id="content">' +
             '<div id="siteNotice">' +
             '</div>' +
-            '<h4 class="firstHeading"> ' + gym.team + ' Gym</h4>' +
+            '<h4 class="firstHeading"> ' + getTeam(team) + ' Gym</h4>' +
             '<div id="bodyContent">' +
             '<p>Pokemon Gym</p>' +
             '</div>' +
@@ -112,12 +99,12 @@ function addGymMarker(newGym) {				// Maybe in future take gym object
         var infoWindow = new google.maps.InfoWindow({
             content: infoContent
         });
-        var pos = new google.maps.LatLng(gym.position[0], gym.position[1]);
+        var pos = new google.maps.LatLng(newGym.lat, newGym.lng);
         var marker = new google.maps.Marker({
             position: pos,
             map: map,
             animation: google.maps.Animation.DROP,
-            icon: image, 		// Won't load image
+            icon: image,
             draggable: false
         });
 
@@ -199,7 +186,24 @@ function getTimeRemaining(ts){
 }
 
 function changeCenter(loc){
-    //map.setCenter(loc);
+    map.setCenter(loc);
     //map.panTo(new google.maps.LatLng(loc.lat, loc.lng));
     console.log(loc);
+}
+
+function getTeam(color) {
+    switch (color) {
+        case 'neutral':
+            return 'Neutral';
+            break;
+        case 'blue':
+            return 'Mystic';
+            break;
+        case 'red':
+            return 'Valor';
+            break;
+        case 'yellow':
+            return 'Instinct';
+            break;
+    }
 }

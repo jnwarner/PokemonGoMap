@@ -50,6 +50,10 @@
 		socket.on('pokemon', function(newPokemon) {
 			addPokeMarker(newPokemon);
         });
+        
+        socket.on('gym', function(newGym) {
+            addGymMarker(newGym);
+        });
 
 		$(document).ready(function() {
 			//addGymMarker(4, 4, 'Neutral');
