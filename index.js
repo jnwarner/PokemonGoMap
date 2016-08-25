@@ -23,9 +23,39 @@ var users = config.accounts;                    // Get Account Usernames
 var pass = config.pass;                         // Get Account Passwds
 var lat = config.lat;	                        // Get Latitude
 var lng = config.lng;                           // Get Longitude
+
 var location = {
     lat: lat,
     lng: lng
+};
+
+// Constructors
+var pokemon = {
+    name: 'null',
+    id: 0,
+    lat: 0,
+    lng: 0,
+    expire: 0.1,
+    attkIV: 0,
+    defIV: 0,
+    stamIV: 0,
+    percentIV: 0
+};
+
+var gym = {
+    name: 'null',
+    team: 'null',
+    inBattle: false,
+    members: [0, 0],
+    lat: 0,
+    lng: 0
+};
+
+var pokeStop = {
+    name: 'null',
+    lat: 0,
+    lng: 0,
+    lureExpire: 0
 };
 
 http.listen(port, function(){                       // Start Http Server
@@ -44,16 +74,29 @@ app.use('/res/icons', express.static(__dirname + '/res/icons'));            // L
 
 //search.search(loginMethod, users, pass, location, io);   // Begin search with client
 
-bot.init(loginMethod, users, pass, location, io);
-bot.listPokes(location);
-bot.listGyms(location);
-
 
 io.on('connection', function (socket) {                  // On client connection...
 	console.log('A client connected');                   // Log connection
-    socket.emit('init', location);                       // Send location
+    var initInfo = {
+        location: location,
+        pokemon: [],
+        gyms: [],
+        stops: []
+    };
+    //initInfo.stops.push({
+    //    name: 'testStop',
+    //    lat: lat,
+    //    lng: lng,
+    //    lureExpire: 0
+    //});
+    socket.emit('init', initInfo);                       // Send init packet
 });
 
 io.on('test', function(socket) {                         // Test socket connection
     console.log('Test Socket Connected');                // Log test connection
 });
+
+bot.init(loginMethod, users, pass, location, io);
+bot.listPokes(location);
+bot.listGyms(location);
+//bot.listPokeStops(location);

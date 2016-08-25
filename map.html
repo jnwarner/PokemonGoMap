@@ -40,8 +40,18 @@
 			console.log('connected');
 		});
 
-        socket.on('init', function(loc) {
-            changeCenter(loc);
+        socket.on('init', function(init) {
+            changeCenter(init.location);
+            init.gyms.forEach(function(item, index) {
+                addGymMarker(item);
+            });
+            init.pokemon.forEach(function(item, index) {
+                addPokeMarker(item);
+            });
+            init.stops.forEach(function(item, index) {
+                addPokeStop(item);
+            });
+            console.log(init);
         });
 
 		socket.on('pokemon', function(newPokemon) {
@@ -51,11 +61,16 @@
         socket.on('gym', function(newGym) {
             addGymMarker(newGym);
         });
+        
+        socket.on('pokeStop', function(newStop) {
+            addPokeStop(newStop);
+        });
 
 		$(document).ready(function() {
 			//addGymMarker(4, 4, 'Neutral');
 			//addGymMarker(4.3, 4, 'Valor');
 			//addPokeMarker(4, 4.3, 150, '6:66');
+
 		});
         
         $(document).foundation();

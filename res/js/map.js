@@ -30,11 +30,21 @@ var gym = {
     lng: 0
 };
 
+var pokeStop = {
+    name: 'null',
+    lat: 0,
+    lng: 0,
+    lureExpire: 0
+};
+
 var activePokemon = [
     pokemon
 ];
 var activeGyms = [
     gym
+];
+var activeStops = [
+    pokeStop
 ];
 
 var normalStyle = [];
@@ -103,7 +113,7 @@ function addGymMarker(newGym) {
         var marker = new google.maps.Marker({
             position: pos,
             map: map,
-            animation: google.maps.Animation.DROP,
+            animation: null,
             icon: image,
             draggable: false
         });
@@ -118,6 +128,58 @@ function addGymMarker(newGym) {
         activeGyms.push(newGym);
     }
     
+}
+
+function addPokeStop(newStop) {
+    console.log('pokestop');
+    var notNew = false;
+    for (var i = 0; i < activeStops.length; i++) {
+        if (activeStops[i].name == newStop.name) {
+            notNew = true;
+        }
+    }
+    if (!notNew) {
+        var imageSrc = '/res/icons/pokestop';
+        if (newStop.lureExpire > 0) {
+            imageSrc += 'Lure';
+        }
+        imageSrc += '.png';
+        var image = {
+            url: imageSrc,
+            origin:new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(15, 15),
+            scaledSize: new google.maps.Size(30, 30)
+        }
+        var infoContent = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h4 class="firstHeading">Pokestop: ' + newStop.name + '</h4>' +
+            '<div id="bodyContent">';
+        if (newStop.lureExpire > 0) {
+            infoContent += '<p>Expires at <span id="LureExpire">Lure Expire' +                      newStop.lureExpire + '</span></p>';
+        }
+        infoContent += '</div></div>';
+        
+        var infoWindow = new google.maps.InfoWindow({
+            content: infoContent
+        });
+        var pos = new google.maps.LatLng(newStop.lat, newStop.lng);
+        var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            animation: null,
+            icon: image,
+            draggable: false
+        });
+        
+        var mouseOverListener = marker.addListener('mouseover', function() {
+            infoWindow.open(map, marker);
+        });
+        
+        var mouseOutListener = marker.addListener('mouseout', function() {
+            infoWindow.close();
+        })
+    }
 }
 
 function addPokeMarker(newPokemon) {
@@ -160,7 +222,8 @@ function addPokeMarker(newPokemon) {
         var marker = new google.maps.Marker({
             position: pos,
             map: map,
-            animation: google.maps.Animation.DROP,
+            //animation: google.maps.Animation.DROP,
+            animation: null,
             icon: image,
             draggable: false
         });

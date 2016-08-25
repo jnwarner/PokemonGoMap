@@ -129,5 +129,35 @@ module.exports = {
             })
         })
         }, 10 * 1000);
+    },
+    
+    listPokeStops: function(loc) {
+        setInterval(() => {
+            var cellIDs = pogobuf.Utils.getCellIDs(loc.lat, loc.lng);
+            return client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0))
+            .then((mapObjects) => {
+                client.batchStart();
+                
+                mapObjects.map_cells.map(cell => cell.forts)
+                    .reduce((a, b) => a.concat(b))
+                    .filter(fort => fort.type === 1)
+                    .forEach(fort => client.fortDetails(fort.id, fort.latitude, fort.longitude));
+                
+                return client.batchCall();
+            })
+            .then (forts => {
+                forts.forEach(fort => {
+                    var newFort = {
+                        name : fort.fort_id,
+                        lat : fort.latitude,
+                        lng : fort.longitude,
+                        lureExpire: 0
+                    }
+                    console.log(newFort);
+
+                    io.emit('pokeStop', newFort);
+                })
+            })
+        })
     }
 }
