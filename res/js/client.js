@@ -151,7 +151,7 @@ module.exports = {
                         name : fort.fort_id,
                         lat : fort.latitude,
                         lng : fort.longitude,
-                        lureExpire: 0
+                        lureExpire: 1
                     }
                     console.log(newFort);
 
