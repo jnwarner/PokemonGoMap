@@ -18,7 +18,7 @@ Once you have installed the node dependencies and setup your config.json you can
 
 ```node index.js```
 
-Navigate to 127.0.0.1:3000 on your web browser to see nearby Pokemon, Gyms, and Pokestops.
+Navigate to [127.0.0.1:3000](127.0.0.1:3000) on your web browser to see nearby Pokemon, Gyms, and Pokestops.
 
 ## Authors
 
