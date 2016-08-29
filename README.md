@@ -23,4 +23,4 @@ Navigate to [127.0.0.1:3000](http://127.0.0.1:3000) on your web browser to see n
 ## Authors
 
 + Adam Eaton
-+ Someone else if they say ok...
++ Paul Gillis
