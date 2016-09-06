@@ -12,6 +12,10 @@ var bot = require('./res/js/client.js');
 var configFile = 'config/config.json';          // Import Config File
 var search = require('./res/js/util.js');       // Import Search Functions
 
+var dbmng = require('./res/js/dbManager.js');
+
+dbmng.init();
+
 var config = JSON.parse(                        
 	fs.readFileSync(configFile)                 // Read Config File
 );
@@ -72,6 +76,7 @@ app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));    // L
 app.use('/res/icons', express.static(__dirname + '/res/icons'));            // Load route to map icons
 
 
+
 //search.search(loginMethod, users, pass, location, io);   // Begin search with client
 
 
@@ -96,7 +101,9 @@ io.on('test', function(socket) {                         // Test socket connecti
     console.log('Test Socket Connected');                // Log test connection
 });
 
-bot.init(loginMethod, users, pass, location, io);
-bot.listPokes(location);
-bot.listGyms(location);
-//bot.listPokeStops(location);
+if (bot.init(loginMethod, users, pass, location, io)) {
+    //bot.listPokes(location);
+    //bot.listGyms(location);
+    //bot.listPokeStops(location);
+    bot.scan(location);
+}

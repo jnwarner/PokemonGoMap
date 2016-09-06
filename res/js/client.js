@@ -33,6 +33,7 @@ module.exports = {
         })
         .then(() => {
             console.log(chalk.green('[LOGIN] - Successful Login: ' + user));
+            return true;
         })
         .catch(console.error);
     },
@@ -159,5 +160,73 @@ module.exports = {
                 })
             })
         })
+    },
+    
+    scan: function(loc) {
+        setInterval(() => {
+            var cellIDs = pogobuf.Utils.getCellIDs(loc.lat, loc.lng);
+            return bluebird.resolve(client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0)))
+            .then(mapObjects => {
+                return mapObjects.map_cells;
+            }).each(cell => {
+                return bluebird.resolve(cell.catchable_pokemons).each(catchablePokemon => {
+                    var ts = 'NULL';
+                    var newPokemon = {
+                        name: pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId, catchablePokemon.pokemon_id),
+                        id: catchablePokemon.pokemon_id,
+                        lat: catchablePokemon.latitude,
+                        lng: catchablePokemon.longitude,
+                        expire: ts,
+                        attkIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).att,
+                        defIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).def,
+                        stamIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon).stam,
+                        percentIV: pogobuf.Utils.getIVsFromPokemon(catchablePokemon)
+                    };
+                    
+                    io.emit('pokemon', newPokemon);
+                    
+                    ts = (ts - new Date().getTime()) / 60000;
+                    ts = ts.toString().split('.');
+                    ts = parseInt(ts[0]) + 'm'+(parseInt(ts[1])*60).toString().substring(0,2)+'s';
+                    
+                    console.log(chalk.blue('[POKEMON] - ' + 
+                        pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId,
+                        catchablePokemon.pokemon_id) + ' Found by ' + usr + ' - Expires in: ' + ts));
+                });
+            }).then(() => {
+                var cellIDs = pogobuf.Utils.getCellIDs(loc.lat, loc.lng);
+                return client.getMapObjects(cellIDs, Array(cellIDs.length).fill(0))
+                .then((mapObjects) => {
+                    client.batchStart();
+
+                    mapObjects.map_cells.map(cell => cell.forts)
+                        .reduce((a, b) => a.concat(b))
+                        .filter(fort => fort.type === 0)
+                        .forEach(fort => client.getGymDetails(fort.id, fort.latitude, fort.longitude));
+
+                    return client.batchCall();
+                })
+                .then(gyms => {
+                    gyms.forEach(gym => {
+                        var fortData = gym.gym_state.fort_data,
+                            memberships = gym.gym_state.memberships;
+
+
+                        var newGym = {
+                            name: gym.name,
+                            team: pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.TeamColor, fortData.owned_by_team),
+                            inBattle: fortData.is_in_battle,
+                            members: memberships,
+                            lat: fortData.latitude,
+                            lng: fortData.longitude
+                        }
+                        
+                        io.emit('gym', newGym);
+                        
+                        console.log(chalk.cyan('[GYM] - ' + gym.name + ' - Team: ' + newGym.team));
+                    })
+                })
+            });
+        }, 10 * 1000);
     }
 }
