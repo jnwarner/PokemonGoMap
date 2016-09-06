@@ -63,7 +63,7 @@ var pokeStop = {
 };
 
 http.listen(port, function(){                       // Start Http Server
-	console.log('listening on 127.0.0.1:' + port);  // Log Server Start
+	console.log(chalk.magenta('[SERVER] - Started on 127.0.0.1:' + port));  // Log Server Start
 });
 
 app.get('/', function(req, res) {               // Route index to map.html
@@ -81,7 +81,7 @@ app.use('/res/icons', express.static(__dirname + '/res/icons'));            // L
 
 
 io.on('connection', function (socket) {                  // On client connection...
-	console.log('A client connected');                   // Log connection
+	console.log(chalk.magenta('[SERVER] - Client connected'));                   // Log connection
     var initInfo = {
         location: location,
         pokemon: [],
@@ -102,8 +102,5 @@ io.on('test', function(socket) {                         // Test socket connecti
 });
 
 if (bot.init(loginMethod, users, pass, location, io)) {
-    //bot.listPokes(location);
-    //bot.listGyms(location);
-    //bot.listPokeStops(location);
     bot.scan(location);
 }
