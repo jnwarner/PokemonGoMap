@@ -24,3 +24,14 @@ Navigate to [127.0.0.1:3000](http://127.0.0.1:3000) on your web browser to see n
 
 + Adam Eaton
 + Paul Gillis
+
+## TODO:
+ - Put found pokemon into database
+ - Send pokemon in database to client on init
+ - Fix countdown time calculation
+ - Make client walk
+ - Hide GMaps API
+ - Create menus and user interface
+ - Create database for settings
+ - Autoscan clients location
+ - Thats all for the moment
