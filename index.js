@@ -5,16 +5,16 @@ var io = require('socket.io')(http);            // Import Socket.io
 var fs = require('fs');                         // Import File Read/Write
 var pogobuf = require('pogobuf');               // Import Pogobuf
 var POGOProtos = require('node-pogo-protos');   // Import Pogo-Protos
-var chalk = require('chalk');
+var chalk = require('chalk');                   // Import Chalk
 
-var bot = require('./res/js/client.js');
+var bot = require('./res/js/client.js');        // Import client / scan code
 
 var configFile = 'config/config.json';          // Import Config File
 var search = require('./res/js/util.js');       // Import Search Functions
 
-var dbmng = require('./res/js/dbManager.js');
+var dbmng = require('./res/js/dbManager.js');   // Import database manager
 
-dbmng.init();
+dbmng.init();                                   // Initialize database manager
 
 var config = JSON.parse(                        
 	fs.readFileSync(configFile)                 // Read Config File
@@ -28,12 +28,13 @@ var pass = config.pass;                         // Get Account Passwds
 var lat = config.lat;	                        // Get Latitude
 var lng = config.lng;                           // Get Longitude
 
+// Create location variable
 var location = {
-    lat: lat,
+    lat: lat, 
     lng: lng
 };
 
-// Constructors
+// Create Object Templates
 var pokemon = {
     name: 'null',
     id: 0,
@@ -75,32 +76,27 @@ app.use('/res/js', express.static(__dirname + '/res/js'));                  // L
 app.use('/res/poke-cons', express.static(__dirname + '/res/poke-cons'));    // Load route to pokemon icons
 app.use('/res/icons', express.static(__dirname + '/res/icons'));            // Load route to map icons
 
-
-
-//search.search(loginMethod, users, pass, location, io);   // Begin search with client
-
+io.on('locChange', function(newPos) {
+    bot.changeLoc(newPos);                              // Change bot location
+});
 
 io.on('connection', function (socket) {                  // On client connection...
-	console.log(chalk.magenta('[SERVER] - Client connected'));                   // Log connection
+	console.log(chalk.magenta('[SERVER] - Client connected'));    // Log connection
     var initInfo = {
         location: location,
         pokemon: [],
         gyms: [],
         stops: []
     };
-    //initInfo.stops.push({
-    //    name: 'testStop',
-    //    lat: lat,
-    //    lng: lng,
-    //    lureExpire: 0
-    //});
-    socket.emit('init', initInfo);                       // Send init packet
+
+    socket.emit('init', initInfo);                       // Send init information
 });
 
 io.on('test', function(socket) {                         // Test socket connection
     console.log('Test Socket Connected');                // Log test connection
 });
 
+// Start bot scan once bot has successfully logged in
 if (bot.init(loginMethod, users, pass, location, io)) {
     bot.scan(location);
 }

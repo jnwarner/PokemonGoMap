@@ -37,7 +37,7 @@ module.exports = {
         })
         .catch(console.error);
     },
-    
+    /*
     listPokes: function(loc) {
         //console.log(chalk.yellow('[STATUS] - ' + usr + ' is Scanning...'));
         setInterval(() => {
@@ -71,7 +71,7 @@ module.exports = {
                     
                     console.log(chalk.blue('[POKEMON] - ' + 
                         pogobuf.Utils.getEnumKeyByValue(POGOProtos.Enums.PokemonId,
-                        catchablePokemon.pokemon_id) + ' Found by ' + usr/* + ' - Expires in: ' + ts*/));
+                        catchablePokemon.pokemon_id) + ' Found by ' + usr/* + ' - Expires in: ' + ts));
                 });
             });
         }, 10 * 1000);
@@ -161,7 +161,8 @@ module.exports = {
             })
         })
     },
-    
+    */
+    // Scans pokemon, gyms, then pokestops every 10 seconds
     scan: function(loc) {
         setInterval(() => {
             var cellIDs = pogobuf.Utils.getCellIDs(loc.lat, loc.lng);
@@ -254,5 +255,10 @@ module.exports = {
                 })
             })
         }, 10 * 1000);
+    },
+    changeLoc: function(newPos) {
+        client.setPosition(newPos);
+        client.playerUpdate();
+        console.log(chalk.magenta('[SERVER] - Changing scan location'));
     }
 }

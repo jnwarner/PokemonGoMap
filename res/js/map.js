@@ -83,10 +83,30 @@ function initMap() {
 	})
 }
 
+function addScanMarker(loc) {
+    var pos = new google.maps.LatLng(loc.lat, loc.lng);
+    var scanMarker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        animation: null,
+        draggable: true
+    });
+    
+    var newPos = {
+        lat: scanMarker.getPosition().lat,
+        lng: scanMarker.getPosition().lng
+    };
+    
+    scanMarker.addListener('dragend', function() {
+        socket.emit('locChange', newPos);
+        console.log('Changing scan location');
+    });
+}
+
 function addGymMarker(newGym) {
     var notNew = false;
     for (var i = 0; i < activeGyms.length; i++) {
-        if (activeGyms[i].name == newGym.name) {
+        if (activeGyms[i].name == newGym.name || activeGyms[i].team == newGym.name) {
             notNew = true;
         }
     }
