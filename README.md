@@ -1,6 +1,6 @@
 # Pokemon GO Map
 
-TODO: Project Description
+TODO: Desc
 
 ## Getting Started
 
